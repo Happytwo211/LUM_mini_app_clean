@@ -1,0 +1,18 @@
+from django.db import models
+from django.contrib.auth.models import User
+
+class Tour(models.Model):
+    tour_name = models.CharField(max_length=300, default='Экскурсия')
+    tour_desc = models.TextField(max_length=2000, default='Описание экскурсии')
+
+    def __str__(self):
+        return f'{self.tour_name}:{self.tour_desc[:20]}'
+
+class UserStats(models.Model):
+    user_stats_to_user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    user_own_tours = models.ForeignKey(to=Tour, on_delete=models.CASCADE)
+    user_bonus_currency = models.IntegerField()
+    user_promocode = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f'{self.user_stats_to_user}'
