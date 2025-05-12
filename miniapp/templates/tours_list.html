@@ -1,0 +1,17 @@
+{% extends 'default.html' %}
+
+{% block content %}
+{% block tours %}
+
+{% if tours %}
+        {% for tour in tours %}
+            {{tour.tour_name}}
+            {{ tour.tour_desc }}
+        {% endfor %}
+{% else %}
+<h1>Экскурсий пока нет</h1>
+{% endif %}
+
+
+{% endblock %}
+{% endblock content %}

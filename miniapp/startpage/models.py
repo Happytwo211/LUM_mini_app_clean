@@ -10,9 +10,9 @@ class Tour(models.Model):
 
 class UserStats(models.Model):
     user_stats_to_user = models.ForeignKey(to=User, on_delete=models.CASCADE)
-    user_own_tours = models.ForeignKey(to=Tour, on_delete=models.CASCADE)
-    user_bonus_currency = models.IntegerField()
-    user_promocode = models.CharField(max_length=20)
+    user_own_tours = models.ForeignKey(to=Tour, on_delete=models.CASCADE, null=True)
+    user_bonus_currency = models.IntegerField(null=True)
+    user_promocode = models.CharField(max_length=20, null=True)
 
     def __str__(self):
         return f'{self.user_stats_to_user}'
