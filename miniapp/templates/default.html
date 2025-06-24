@@ -4,47 +4,48 @@
     <meta charset="UTF-8">
     <title>Люблю Москву!</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
 
-{% block tours %} {% endblock %}
-{% block user %} {% endblock %}
+        main {
+            padding-bottom: 50px; /* Равен высоте футера */
+        }
 
-<footer>
-
-    <a href="#" style="text-decoration: none;"><i class="fas fa-route"></i> Экскурсии</a>
-    <a href="#" style="text-decoration: none;"><i class="fas fa-user"></i> Профиль</a>
-
-</footer>
-
-
-<header></header>
-</body>
-<style>
         footer {
             position: fixed;
             bottom: 0;
-            right: 500px;
-            width: 48%;
+            left: 0;
+            width: 100%;
             background-color: white;
             text-align: center;
             height: 50px;
             line-height: 50px;
-
-        }
-
-        footer_style {
-            color: black;
         }
 
         footer a {
-             margin-left: 50px;
-             color: black;
-             font-size:18px;
+            margin-left: 50px;
+            color: black;
+            font-size: 18px;
         }
-</style>
+    </style>
+</head>
+<body>
 
+    <!-- Основной контент -->
+    <main>
+        {% block tours %}{% endblock %}
+        {% block user %}{% endblock %}
+    </main>
 
+    <!-- Футер -->
+    <footer>
+        <a style="text-decoration: none;" href="#"><i class="fas fa-route"></i>Экскурсии</a>
+        <a style="text-decoration: none;" href="#"><i class="fas fa-user"></i>Профиль</a>
+    </footer>
+
+</body>
 </html>
-
-
