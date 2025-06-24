@@ -1,8 +1,11 @@
 from django.urls import path, include
 from .views import ToursList, UserProfile, ToursDetail
 
+
 urlpatterns = [
     path('tours/', ToursList.as_view(), name='tours_list'),
     path('profile/<int:pk>', UserProfile.as_view(), name='profile'),
     path('tours/<int:pk>', ToursDetail.as_view(), name='tour_detail'),
 ]
+
+

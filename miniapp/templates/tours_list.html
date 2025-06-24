@@ -47,13 +47,16 @@
         <div class="tour-container">
             <div class="tour-item">
                 <div class="tour-img-container">
-                    <img class="tour_img" src="//2.downloader.disk.yandex.com/preview/fe5bcb4085e37780cbcfe9c0e50587e613f5a21fe5fdb1c87ed012da49c9e02c/inf/MnlL5vtHe1YY0PTsGCa26iecOOjThLnfy554i0L3-9beAjnfv5XCaXt2ssbD-Ego1svtvBpqARpW62MAYUhkGw%3D%3D?uid=395144095&filename=3c57ebbb7229653875bb1cbe8e64bbdd7e9fe33f%20%281%29.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&owner_uid=395144095&tknv=v3&size=1126x912">
+                    <a style="text-decoration: none;" href="/main_page/tours/{{tour.id}}"> <img class="tour_img" src="{{ tour.tour_photo.url }}" alt="img"> </a>
+<!--                    <img class="tour_img" src="//2.downloader.disk.yandex.com/preview/fe5bcb4085e37780cbcfe9c0e50587e613f5a21fe5fdb1c87ed012da49c9e02c/inf/MnlL5vtHe1YY0PTsGCa26iecOOjThLnfy554i0L3-9beAjnfv5XCaXt2ssbD-Ego1svtvBpqARpW62MAYUhkGw%3D%3D?uid=395144095&filename=3c57ebbb7229653875bb1cbe8e64bbdd7e9fe33f%20%281%29.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&owner_uid=395144095&tknv=v3&size=1126x912">-->
 <!--                    ПЕРЕПИСАТЬ ПОД ID ФОТОГРАФИИ-->
-
+<!--                        <p class="tour_img">{{ tour.tour_photo }}</p>-->
+<!--                        <p class="tour_img">{{ tour.tour_photo.url }}</p>-->
                 </div>
                     <a class="tour-name" style="text-decoration: none;" href="/main_page/tours/{{tour.id}}">{{tour.tour_name}}</a>
 <!--                    <p class="tour-name">{{tour.tour_name}}</p>-->
                     <p class="tour-desc">{{ tour.tour_desc }}</p>
+
 <!--                    <p class="tour-raiting"><i class="fas fa-star"></i> {{ tour.tour_rating}}</p>-->
 <!--                    <p class="tour-duration"><i class="fas fa-clock"></i> {{ tour.tour_duration}} минут</p>-->
 <!--                    <p class="tour-location"><i class="fas fa-map-marker-alt"></i> {{ tour.tour_location}}</p>-->

@@ -14,6 +14,8 @@ class ToursList(ListView):
     template_name = 'tours_list.html'
     context_object_name = 'tours'
     paginate_by = 3
+
+
 class UserProfile(DetailView, LoginRequiredMixin):
     model = UserStats
     ordering = 'user_stats_to_user'

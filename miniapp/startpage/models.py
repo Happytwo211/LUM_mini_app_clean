@@ -7,9 +7,10 @@ class Tour(models.Model):
     tour_desc = models.TextField(max_length=2000, default='Описание экскурсии')
     tour_rating = models.IntegerField(default=10)
     tour_duration = models.IntegerField(default=5)
-    tour_value = models.IntegerField(default=500, max_length=10)
+    tour_value = models.IntegerField(default=500)
     tour_location = models.CharField(max_length=200, default='Location')
-    # tour_photo = models.Photo
+    # tour_photo = models.ImageField(upload_to='images/', default='image')
+    tour_photo = models.ImageField(upload_to='tours/')
     def __str__(self):
         return f'{self.tour_name} : {self.tour_desc[:20]}'
 
