@@ -5,9 +5,9 @@ from django.http import JsonResponse, request
 
 class Tour(models.Model):
 
-    CONTENTYPE = 'Экскурсия'
+    CONTENT_TYPE = 'Экскурсия'
 
-    tour_content_type = models.CharField(default=CONTENTYPE, editable=False)
+    tour_content_type = models.CharField(default=CONTENT_TYPE, editable=False)
     tour_time_add = models.TimeField(auto_now=True)
     tour_date_add = models.DateField(auto_now_add=True)
 
@@ -19,19 +19,23 @@ class Tour(models.Model):
     tour_location = models.CharField(max_length=200, default='Location')
     # tour_photo = models.ImageField(upload_to='images/', default='image')
     tour_photo = models.ImageField(upload_to='tours/')
+    tour_dropbox_desc = models.TextField(default='description')
+    tour_element_1 = models.CharField(max_length=50, default='route_el_1')
+    tour_element_2 = models.CharField(max_length=50, default='route_el_2')
+    tour_element_3 = models.CharField(max_length=50, default='route_el_3')
+
     def __str__(self):
-        return f'{self.tour_name} : {self.tour_desc[:20]}'
+        return f'{self.tour_name} : {self.tour_desc}'
 
 class UserStats(models.Model):
     user_own_tours = models.ForeignKey(to=Tour, default=None, on_delete=models.CASCADE, unique=True)
     user_stats_to_user = models.ForeignKey(to=User, default=None, on_delete=models.CASCADE)
     def __str__(self):
         return f'{self.user_stats_to_user}:{self.user_own_tours}'
-
     def check_tour_ownership(request, tour_id ):
         try:
             tour = get_object_or_404(Tour, id=tour_id)
-            user_stats  = UserStats.objects.filter(
+            user_stats = UserStats.objects.filter(
                 user_stats_to_user=request.user,
                 user_own_tours=tour
             )
@@ -43,6 +47,7 @@ class UserStats(models.Model):
 
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
+
 
 
 class ContentType(models.Model):
@@ -61,3 +66,9 @@ class ContentType(models.Model):
 
     def __str__(self):
         return f'{self.choose}'
+
+
+class Quiz(models.Model):
+    pass
+
+

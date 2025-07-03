@@ -15,6 +15,10 @@ class ToursList(ListView):
     context_object_name = 'tours'
     paginate_by = 3
 
+class TourDetail(DetailView):
+    model = Tour
+    template_name = 'tour_detail.html'
+    context_object_name = 'tour'
 
 class UserProfile(DetailView, LoginRequiredMixin):
     model = UserStats
@@ -23,3 +27,7 @@ class UserProfile(DetailView, LoginRequiredMixin):
     context_object_name = 'users'
 
 
+class TourDetailTEST(ListView):
+    model = Tour
+    template_name = 'test_drop_down.html'
+    context_object_name = 'tour'

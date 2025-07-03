@@ -2,7 +2,104 @@
 
 {% block content %}
 {% block tours_detail %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+<style>
+    /* Общие стили */
+    .name-desc-box,
+    .dropdown-box,
+    .dropdown-box-2,
+    .dropdown-box-3 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+    }
 
+    .name-desc-rect,
+    .drop-down-rect,
+    .drop-down-rect-2,
+    .drop-down-rect-3 {
+        background-color: white;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: left;
+        width: 60%;
+        max-width: 600px;
+        min-height: 100px;
+    }
+
+    /* Отдельный класс для иконок */
+    .tour-icon {
+        font-size: 50px; /* Базовый размер */
+        color: #008000;
+        display: block;
+        margin-bottom: 10px;
+        text-align: left;
+    }
+
+    /* Стили для текста под иконками */
+    .drop-down-rect p,
+    .drop-down-rect-2 p,
+    .drop-down-rect-3 p {
+        margin: 0;
+        font-size: 30px;
+        text-align: left;
+    }
+
+    .icon-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .tour_name {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        text-align: left;
+    }
+
+    .tour_desc {
+        font-size: 16px;
+        color: #555;
+        text-align: left;
+    }
+</style>
+
+<div class="name-desc-box">
+    <div class="name-desc-rect">
+        <p class="tour_name">{{ tour.tour_name }}</p>
+        <p class="tour_desc">{{ tour.tour_desc }}</p>
+    </div>
+</div>
+
+<div class="dropdown-box">
+    <div class="drop-down-rect">
+        <div class="icon-container">
+            <i class="fa-solid fa-bullhorn tour-icon"></i>
+            <p>{{ tour.tour_element_1 }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="dropdown-box-2">
+    <div class="drop-down-rect-2">
+        <div class="icon-container">
+            <i class="fa-solid fa-map tour-icon"></i>
+            <p>{{ tour.tour_element_2 }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="dropdown-box-3">
+    <div class="drop-down-rect-3">
+        <div class="icon-container">
+            <i class="fa-solid fa-book tour-icon"></i>
+            <p>{{ tour.tour_element_3 }}</p>
+        </div>
+    </div>
+</div>
 {% endblock %}
 {% endblock content %}

@@ -1,0 +1,98 @@
+{% extends 'default.html' %}
+
+{% block content %}
+{% block tours_detail %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css">
+
+<style>
+    .name-desc-box {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .name-desc-rect {
+        background-color: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s ease-in-out; /* Плавность растяжения карточки */
+        overflow: hidden; /* Скрываем излишний контент */
+    }
+
+    .dropdown-box {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out;
+        background-color: #fafafa;
+        border-radius: 0 0 20px 20px;
+        padding: 0 40px;
+    }
+
+    .open-dropdown {
+        max-height: 500px; /* Максимальная высота раскрываемого блока */
+    }
+
+    button.toggle-btn {
+        cursor: pointer;
+        color: black;
+        background: none;
+        border: none;
+        outline: none;
+        font-size: 1rem;
+        padding: 0;
+        margin-top: 10px;
+    }
+
+    /* Стрелочка меняется при открытом состоянии */
+    .toggle-btn.opened i::before {
+        content: "\f077"; /* Стрелочка вверх */
+    }
+
+    .toggle-btn.closed i::before {
+        content: "\f078"; /* Стрелочка вниз */
+    }
+</style>
+
+<div class="name-desc-box">
+    <div class="name-desc-rect">
+        <p class="tour_name">{{ tour.tour_name }} </p>
+        <p class="tour_desc">{{ tour.tour_desc }} </p>
+
+        <!-- Кнопка для открытия и закрытия -->
+        <button class="toggle-btn closed"><i class="fa-solid fa-angle-down"></i></button>
+
+        <!-- Раскрываемый блок -->
+        <div class="dropdown-box">
+            <h3>Дополнительная информация:</h3>
+            <ul>
+                <li>Информация 1</li>
+                <li>Информация 2</li>
+                <li>Информация 3</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Скрипт для обработки события клик -->
+<script>
+document.querySelector('.toggle-btn').addEventListener('click', function(event) {
+    event.preventDefault(); // Предотвращаем обработку стандартных действий кнопки
+    const dropdownBox = this.nextElementSibling; // Получаем следующий элемент (.dropdown-box)
+    const toggleBtn = this; // Текущая кнопка
+
+    if (dropdownBox.classList.contains('open-dropdown')) {
+        // Если блок уже открыт, закрываем его
+        dropdownBox.classList.remove('open-dropdown');
+        toggleBtn.className = 'toggle-btn closed'; // Меняем класс кнопки
+    } else {
+        // Иначе открываем блок
+        dropdownBox.classList.add('open-dropdown');
+        toggleBtn.className = 'toggle-btn opened';
+    }
+});
+</script>
+
+{% endblock %}
+{% endblock content %}
