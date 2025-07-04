@@ -30,28 +30,39 @@
         min-height: 100px;
     }
 
-    /* Отдельный класс для иконок */
-    .tour-icon {
-        font-size: 50px; /* Базовый размер */
-        color: #008000;
-        display: block;
-        margin-bottom: 10px;
-        text-align: left;
+    /* Стили для иконок и стрелок */
+    .icon-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
     }
 
-    /* Стили для текста под иконками */
+    .icon-container {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .tour-icon {
+        font-size: 40px;
+        color: #000000; /* Черный цвет иконок */
+        display: block;
+    }
+
+    .arrow-icon {
+        font-size: 24px;
+        color: #000000;
+        cursor: pointer;
+    }
+
+    /* Стили для текста */
     .drop-down-rect p,
     .drop-down-rect-2 p,
     .drop-down-rect-3 p {
         margin: 0;
         font-size: 30px;
         text-align: left;
-    }
-
-    .icon-container {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
     }
 
     .tour_name {
@@ -77,27 +88,36 @@
 
 <div class="dropdown-box">
     <div class="drop-down-rect">
-        <div class="icon-container">
-            <i class="fa-solid fa-bullhorn tour-icon"></i>
-            <p>{{ tour.tour_element_1 }}</p>
+        <div class="icon-row">
+            <div class="icon-container">
+                <i class="fa-solid fa-bullhorn tour-icon"></i>
+                <p>{{ tour.tour_element_1 }}</p>
+            </div>
+            <i class="fa-solid fa-chevron-down arrow-icon"></i>
         </div>
     </div>
 </div>
 
 <div class="dropdown-box-2">
     <div class="drop-down-rect-2">
-        <div class="icon-container">
-            <i class="fa-solid fa-map tour-icon"></i>
-            <p>{{ tour.tour_element_2 }}</p>
+        <div class="icon-row">
+            <div class="icon-container">
+                <i class="fa-solid fa-map tour-icon"></i>
+                <p>{{ tour.tour_element_2 }}</p>
+            </div>
+            <i class="fa-solid fa-chevron-down arrow-icon"></i>
         </div>
     </div>
 </div>
 
 <div class="dropdown-box-3">
     <div class="drop-down-rect-3">
-        <div class="icon-container">
-            <i class="fa-solid fa-book tour-icon"></i>
-            <p>{{ tour.tour_element_3 }}</p>
+        <div class="icon-row">
+            <div class="icon-container">
+                <i class="fa-solid fa-book tour-icon"></i>
+                <p>{{ tour.tour_element_3 }}</p>
+            </div>
+            <i class="fa-solid fa-chevron-down arrow-icon"></i>
         </div>
     </div>
 </div>
