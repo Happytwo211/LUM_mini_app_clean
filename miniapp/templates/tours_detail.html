@@ -28,6 +28,8 @@
         width: 60%;
         max-width: 600px;
         min-height: 100px;
+        transition: all 0.3s ease;
+        overflow: hidden;
     }
 
     /* Стили для иконок и стрелок */
@@ -46,7 +48,7 @@
 
     .tour-icon {
         font-size: 40px;
-        color: #000000; /* Черный цвет иконок */
+        color: #000000;
         display: block;
     }
 
@@ -54,6 +56,7 @@
         font-size: 24px;
         color: #000000;
         cursor: pointer;
+        transition: transform 0.3s ease;
     }
 
     /* Стили для текста */
@@ -77,6 +80,28 @@
         color: #555;
         text-align: left;
     }
+
+    /* Стили для скрытого контента */
+    .hidden-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        margin-top: 20px;
+        font-size: 16px;
+        color: #555;
+        padding: 0 10px;
+    }
+
+    .drop-down-rect.expanded .hidden-content,
+    .drop-down-rect-2.expanded .hidden-content,
+    .drop-down-rect-3.expanded .hidden-content {
+        max-height: 1000px; /* Достаточно большое значение для анимации */
+        padding: 0 10px 20px;
+    }
+
+    .expanded .arrow-icon {
+        transform: rotate(180deg);
+    }
 </style>
 
 <div class="name-desc-box">
@@ -87,39 +112,63 @@
 </div>
 
 <div class="dropdown-box">
-    <div class="drop-down-rect">
+    <div class="drop-down-rect" id="dropdown1">
         <div class="icon-row">
             <div class="icon-container">
                 <i class="fa-solid fa-bullhorn tour-icon"></i>
                 <p>{{ tour.tour_element_1 }}</p>
             </div>
-            <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            <i class="fa-solid fa-chevron-down arrow-icon" onclick="toggleDropdown('dropdown1')"></i>
+        </div>
+        <div class="hidden-content">
+            {{ tour.tour_element_1_content|default:"Контент для первого элемента тура"|safe }}
         </div>
     </div>
 </div>
 
 <div class="dropdown-box-2">
-    <div class="drop-down-rect-2">
+    <div class="drop-down-rect-2" id="dropdown2">
         <div class="icon-row">
             <div class="icon-container">
                 <i class="fa-solid fa-map tour-icon"></i>
                 <p>{{ tour.tour_element_2 }}</p>
             </div>
-            <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            <i class="fa-solid fa-chevron-down arrow-icon" onclick="toggleDropdown('dropdown2')"></i>
+        </div>
+        <div class="hidden-content">
+            {{ tour.tour_element_2_content|default:"Контент для второго элемента тура"|safe }}
         </div>
     </div>
 </div>
 
 <div class="dropdown-box-3">
-    <div class="drop-down-rect-3">
+    <div class="drop-down-rect-3" id="dropdown3">
         <div class="icon-row">
             <div class="icon-container">
                 <i class="fa-solid fa-book tour-icon"></i>
                 <p>{{ tour.tour_element_3 }}</p>
             </div>
-            <i class="fa-solid fa-chevron-down arrow-icon"></i>
+            <i class="fa-solid fa-chevron-down arrow-icon" onclick="toggleDropdown('dropdown3')"></i>
+        </div>
+        <div class="hidden-content">
+            {{ tour.tour_element_3_content|default:"Контент для третьего элемента тура"|safe }}
         </div>
     </div>
 </div>
+
+<script>
+    function toggleDropdown(id) {
+        const dropdown = document.getElementById(id);
+        dropdown.classList.toggle('expanded');
+
+        // Закрываем другие открытые dropdowns
+        const allDropdowns = document.querySelectorAll('.drop-down-rect, .drop-down-rect-2, .drop-down-rect-3');
+        allDropdowns.forEach(item => {
+            if (item.id !== id && item.classList.contains('expanded')) {
+                item.classList.remove('expanded');
+            }
+        });
+    }
+</script>
 {% endblock %}
 {% endblock content %}
