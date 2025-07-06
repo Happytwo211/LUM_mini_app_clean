@@ -123,7 +123,7 @@
             <i class="fa-solid fa-chevron-down arrow-icon"></i>
         </div>
         <div class="hidden-content">
-            {{ tour.tour_element_1_content|default:"Контент для первого элемента тура"|safe }}
+            {{ tour.tour_element_1_content|default:"Element"|safe }}
         </div>
     </div>
 </div>
@@ -163,13 +163,7 @@
         const dropdown = document.getElementById(id);
         dropdown.classList.toggle('expanded');
 
-        // Закрываем другие открытые dropdowns
-        const allDropdowns = document.querySelectorAll('.drop-down-rect');
-        allDropdowns.forEach(item => {
-            if (item.id !== id && item.classList.contains('expanded')) {
-                item.classList.remove('expanded');
-            }
-        });
+
     }
 </script>
 {% endblock %}

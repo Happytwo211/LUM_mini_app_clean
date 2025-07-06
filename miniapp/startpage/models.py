@@ -23,7 +23,7 @@ class Tour(models.Model):
     tour_element_1 = models.CharField(max_length=50, default='route_el_1')
     tour_element_2 = models.CharField(max_length=50, default='route_el_2')
     tour_element_3 = models.CharField(max_length=50, default='route_el_3')
-
+    tour_element_1_desc = models.CharField(default='tour_element_1_desc')
     def __str__(self):
         return f'{self.tour_name} : {self.tour_desc}'
 
