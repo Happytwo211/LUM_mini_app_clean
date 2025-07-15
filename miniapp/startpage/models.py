@@ -17,15 +17,22 @@ class Tour(models.Model):
     tour_duration = models.IntegerField(default=5)
     tour_value = models.IntegerField(default=500)
     tour_location = models.CharField(max_length=200, default='Location')
-    # tour_photo = models.ImageField(upload_to='images/', default='image')
     tour_photo = models.ImageField(upload_to='tours/')
-    tour_dropbox_desc = models.TextField(default='description')
-    tour_element_1 = models.CharField(max_length=50, default='route_el_1')
-    tour_element_2 = models.CharField(max_length=50, default='route_el_2')
-    tour_element_3 = models.CharField(max_length=50, default='route_el_3')
-    tour_element_1_desc = models.CharField(default='tour_element_1_desc')
+
+
     def __str__(self):
         return f'{self.tour_name} : {self.tour_desc}'
+
+
+class TourElements(models.Model):
+    tour_el_to_tour = models.ForeignKey(to=Tour, max_length=50, default='tour_el', on_delete=models.CASCADE)
+    tour_element = models.CharField(max_length=50, default='tour_el')
+    tour_element_desc = models.CharField(max_length=150, default='tour_el_desc')
+    tour_element_img = models.ImageField(upload_to='tour_element_img/', null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.tour_el_to_tour}:{self.tour_element}'
+
 
 class UserStats(models.Model):
     user_own_tours = models.ForeignKey(to=Tour, default=None, on_delete=models.CASCADE, unique=True)

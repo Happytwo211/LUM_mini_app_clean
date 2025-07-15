@@ -2,169 +2,29 @@
 
 {% block content %}
 {% block tours_detail %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<style>
-    /* Общие стили */
-    .name-desc-box,
-    .dropdown-box {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .name-desc-rect,
-    .drop-down-rect {
-        background-color: white;
-        border-radius: 20px;
-        padding: 30px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        text-align: left; /* Выравнивание текста по левому краю */
-        width: 60%;
-        max-width: 600px;
-        min-height: 100px;
-        transition: all 0.3s ease;
-        overflow: hidden;
-    }
-
-    /* Стили для иконок и заголовков */
-    .dropdown-header {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start; /* Выравнивание по левому краю */
-        margin-bottom: 15px;
-    }
-
-    .icon-title-container {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start; /* Выравнивание по левому краю */
-        width: 100%;
-    }
-
-    .tour-icon {
-        font-size: 40px;
-        color: #000000;
-        margin-bottom: 10px;
-    }
-
-    .dropdown-title {
-        font-size: 24px;
-        text-align: left; /* Выравнивание текста по левому краю */
-        margin: 0;
-    }
-
-    /* Стили для стрелки и верхней части */
-    .dropdown-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        cursor: pointer;
-    }
-
-    .arrow-icon {
-        font-size: 24px;
-        color: #000000;
-        transition: transform 0.3s ease;
-        align-self: flex-start;
-    }
-
-    /* Стили для текста */
-    .tour_name {
-        font-size: 24px;
-        font-weight: bold;
-        margin-bottom: 10px;
-        text-align: left; /* Выравнивание по левому краю */
-    }
-
-    .tour_desc {
-        font-size: 16px;
-        color: #555;
-        text-align: left; /* Выравнивание по левому краю */
-    }
-
-    /* Стили для скрытого контента */
-    .hidden-content {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease;
-        font-size: 16px;
-        color: #555;
-        padding: 0 10px;
-        text-align: left; /* Выравнивание по левому краю */
-    }
-
-    .drop-down-rect.expanded .hidden-content {
-        max-height: 1000px;
-        padding: 20px 10px 0;
-    }
-
-    .expanded .arrow-icon {
-        transform: rotate(180deg);
-    }
-</style>
-
-<div class="name-desc-box">
-    <div class="name-desc-rect">
-        <p class="tour_name">{{ tour.tour_name }}</p>
-        <p class="tour_desc">{{ tour.tour_desc }}</p>
-    </div>
-</div>
-
-<div class="dropdown-box">
-    <div class="drop-down-rect" id="dropdown1">
-        <div class="dropdown-top" onclick="toggleDropdown('dropdown1')">
-            <div class="icon-title-container">
-                <i class="fa-solid fa-bullhorn tour-icon"></i>
-                <p class="dropdown-title">{{ tour.tour_element_1 }}</p>
-            </div>
-            <i class="fa-solid fa-chevron-down arrow-icon"></i>
-        </div>
-        <div class="hidden-content">
-            {{ tour.tour_element_1_content|default:"Element"|safe }}
-        </div>
-    </div>
-</div>
-
-<div class="dropdown-box">
-    <div class="drop-down-rect" id="dropdown2">
-        <div class="dropdown-top" onclick="toggleDropdown('dropdown2')">
-            <div class="icon-title-container">
-                <i class="fa-solid fa-map tour-icon"></i>
-                <p class="dropdown-title">{{ tour.tour_element_2 }}</p>
-            </div>
-            <i class="fa-solid fa-chevron-down arrow-icon"></i>
-        </div>
-        <div class="hidden-content">
-            {{ tour.tour_element_2_content|default:"Контент для второго элемента тура"|safe }}
-        </div>
-    </div>
-</div>
-
-<div class="dropdown-box">
-    <div class="drop-down-rect" id="dropdown3">
-        <div class="dropdown-top" onclick="toggleDropdown('dropdown3')">
-            <div class="icon-title-container">
-                <i class="fa-solid fa-book tour-icon"></i>
-                <p class="dropdown-title">{{ tour.tour_element_3 }}</p>
-            </div>
-            <i class="fa-solid fa-chevron-down arrow-icon"></i>
-        </div>
-        <div class="hidden-content">
-            {{ tour.tour_element_3_content|default:"Контент для третьего элемента тура"|safe }}
-        </div>
-    </div>
-</div>
-
-<script>
-    function toggleDropdown(id) {
-        const dropdown = document.getElementById(id);
-        dropdown.classList.toggle('expanded');
-
-
-    }
-</script>
+{% if tour %}
+    <p class="tour_name">{{ tour.tour_name }}</p>
+    <p class="tour_desc">{{ tour.tour_desc }}</p>
+{% else %}
+    <p class="not_found">Ошибка</p>
+{% endif %}
 {% endblock %}
+
+{% block tour_el %}
+    <h2>Элементы тура:</h2>
+    {% for element in tour_elements %}
+      <p>{{ element.tour_element }}</p>
+      {% if element.tour_element_img %}
+        <img src="{{ element.tour_element_img.url }}" alt="{{ element.tour_element }}">
+      {% endif %}
+    {% empty %}
+      <p>Нет элементов.</p>
+    {% endfor %}
+  {% endblock %}
+
 {% endblock content %}
+
+#TODO
+переделать отобарэение tour_elenments под формат for i. чтобы отоброажалось по количеству поступления
