@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+from phone_field import PhoneField
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse, request
 
@@ -34,26 +35,16 @@ class TourElements(models.Model):
         return f'{self.tour_el_to_tour}:{self.tour_element}'
 
 
-class UserStats(models.Model):
-    user_own_tours = models.ForeignKey(to=Tour, default=None, on_delete=models.CASCADE, unique=True)
-    user_stats_to_user = models.ForeignKey(to=User, default=None, on_delete=models.CASCADE)
+class CustomUser(AbstractUser):
+    phone = models.CharField(max_length=20, unique=True)
+    is_phone_verified = models.BooleanField(default=False)
+    otp = models.CharField(max_length=6, null=True, blank=True)
+
+    USERNAME_FIELD = 'phone'  # Указываем, что логин по телефону
+    REQUIRED_FIELDS = ['username']  # username всё ещё требуется для createsuperuser
+
     def __str__(self):
-        return f'{self.user_stats_to_user}:{self.user_own_tours}'
-    def check_tour_ownership(request, tour_id ):
-        try:
-            tour = get_object_or_404(Tour, id=tour_id)
-            user_stats = UserStats.objects.filter(
-                user_stats_to_user=request.user,
-                user_own_tours=tour
-            )
-            is_owned = user_stats.exists()
-
-            return JsonResponse({
-                'is_tour_owned': is_owned
-            })
-
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=400)
+        return self.phone
 
 
 
@@ -73,9 +64,5 @@ class ContentType(models.Model):
 
     def __str__(self):
         return f'{self.choose}'
-
-
-class Quiz(models.Model):
-    pass
 
 
