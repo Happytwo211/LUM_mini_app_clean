@@ -12,6 +12,15 @@ from .forms import PhoneLoginForm, OTPVerificationForm
 from .models import CustomUser
 from .utils import send_sms
 from .utils import send_sms
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import random
+from .forms import PhoneLoginForm, OTPVerificationForm
+from .models import CustomUser
+from .utils import send_sms
 
 class ToursDetail(DetailView):
     model = Tour

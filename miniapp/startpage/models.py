@@ -36,16 +36,15 @@ class TourElements(models.Model):
 
 
 class CustomUser(AbstractUser):
-    phone = models.CharField(max_length=20, unique=True)
+    phone = PhoneField(unique=True)
     is_phone_verified = models.BooleanField(default=False)
     otp = models.CharField(max_length=6, null=True, blank=True)
 
-    USERNAME_FIELD = 'phone'  # Указываем, что логин по телефону
-    REQUIRED_FIELDS = ['username']  # username всё ещё требуется для createsuperuser
+    USERNAME_FIELD = 'phone'
+    REQUIRED_FIELDS = ['username']  # username все еще требуется, но не используется для входа
 
     def __str__(self):
         return self.phone
-
 
 
 class ContentType(models.Model):

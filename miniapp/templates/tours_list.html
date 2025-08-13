@@ -12,7 +12,7 @@
     }
     .tour-item {
         text-align: left;
-        width: 367px;
+        width: 467px; /* Увеличил ширину контейнера для больших картинок */
     }
     .tour-name {
         font-size: 24px;
@@ -20,11 +20,11 @@
         font-weight: bold;
         font-family: Roboto, sans-serif;
         margin-top: 0;
-        margin-bottom: 5px; /* Уменьшил отступ снизу названия */
+        margin-bottom: 5px;
     }
     .tour-desc {
         color: gray;
-        margin-top: 0; /* Убрал отступ сверху описания */
+        margin-top: 0;
         margin-bottom: 10px;
         line-height: 1.5;
     }
@@ -34,8 +34,8 @@
         margin-bottom: 25px;
     }
     .tour_img {
-        max-width: 367px;
-        max-height: 520px;
+        max-width: 467px; /* Увеличил максимальную ширину */
+        max-height: 620px; /* Увеличил максимальную высоту */
         border-radius: 50px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
@@ -58,13 +58,13 @@
     .title-block {
         display: flex;
         flex-direction: column;
-        margin-bottom: 5px; /* Уменьшил отступ снизу блока с заголовком */
+        margin-bottom: 5px;
     }
 </style>
 
 {% if tours %}
     {% for tour in tours %}
-        <div class="tour-container">
+        <div class="tour-container" {% if forloop.first %}style="margin-top: 50px;"{% endif %}>  <!-- Добавлен отступ сверху для первого элемента -->
             <div class="tour-item">
                 <div class="tour-img-container">
                     <a style="text-decoration: none;" href="/main_page/tours/{{tour.id}}">
