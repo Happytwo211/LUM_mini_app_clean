@@ -1,8 +1,7 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
-from phone_field import PhoneField
-from django.shortcuts import get_object_or_404
-from django.http import JsonResponse, request
+from django.db import models
+import random
+
 
 class Tour(models.Model):
 
@@ -36,15 +35,17 @@ class TourElements(models.Model):
 
 
 class CustomUser(AbstractUser):
-    phone = PhoneField(unique=True)
-    is_phone_verified = models.BooleanField(default=False)
-    otp = models.CharField(max_length=6, null=True, blank=True)
+    phone = models.CharField(max_length=15, unique=True)
+    verification_code = models.CharField(max_length=4, blank=True, null=True)
+    is_verified = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'phone'
-    REQUIRED_FIELDS = ['username']  # username все еще требуется, но не используется для входа
+    REQUIRED_FIELDS = []
 
-    def __str__(self):
-        return self.phone
+    def generate_verification_code(self):
+        self.verification_code = str(random.randint(1000, 9999))
+        self.save()
+        return self.verification_code
 
 
 class ContentType(models.Model):

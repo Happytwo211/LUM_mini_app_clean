@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'startpage',
 ]
 
+SMS_RU_API_ID = '0D3EBB66-5261-6EBF-7C01-329DF9111B47'
+
 SITE_ID = 1
 
 MIDDLEWARE = [
@@ -137,3 +139,10 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'startpage.CustomUser'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}

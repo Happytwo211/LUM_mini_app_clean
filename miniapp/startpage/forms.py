@@ -1,14 +1,21 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm
-from .models import CustomUser
-class PhoneLoginForm(forms.Form):
-    phone = forms.CharField(max_length=20)
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
-    def clean_phone(self):
-        phone = self.cleaned_data.get('phone')
-        if not CustomUser.objects.filter(phone=phone).exists():
-            raise forms.ValidationError("Пользователь с таким номером не найден")
-        return phone
+class PhoneForm(forms.Form):
+    phone = forms.CharField(
+        max_length=15,
+        widget=forms.TextInput(attrs={
+            'placeholder': '+79123456789',
+            'class': 'form-control'
+        })
+    )
 
-class OTPVerificationForm(forms.Form):
-    otp = forms.CharField(max_length=6)
+class VerificationForm(forms.Form):
+    code = forms.CharField(
+        max_length=4,
+        widget=forms.TextInput(attrs={
+            'placeholder': '1234',
+            'class': 'form-control'
+        })
+    )

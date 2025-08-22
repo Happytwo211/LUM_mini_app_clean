@@ -1,26 +1,10 @@
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Tour, TourElements, CustomUser
 from django.shortcuts import render, redirect
-from django.contrib.auth import login
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
-import random
-from .forms import PhoneLoginForm, OTPVerificationForm
-from .models import CustomUser
-from .utils import send_sms
-from .utils import send_sms
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
-import random
-from .forms import PhoneLoginForm, OTPVerificationForm
-from .models import CustomUser
-from .utils import send_sms
+from django.contrib.auth import login, authenticate
+from django.contrib import messages
+from django.views.generic import DetailView, ListView
+from .forms import PhoneForm, VerificationForm
+from .services.sms_service import SMSService
+from .models import CustomUser, Tour
 
 class ToursDetail(DetailView):
     model = Tour
@@ -40,58 +24,103 @@ class ToursList(ListView):
     paginate_by = 3
 
 
-# class UserProfile(DetailView, LoginRequiredMixin):
-#     model = UserStats
-#     ordering = 'user_stats_to_user'
-#     template_name = 'user_profile.html'
-#     context_object_name = 'users'
-
-
-def phone_login(request):
+def send_verification_code(request):
     if request.method == 'POST':
-        form = PhoneLoginForm(request.POST)
+        form = PhoneForm(request.POST)
         if form.is_valid():
             phone = form.cleaned_data['phone']
-            user = CustomUser.objects.get(phone=phone)
-            otp = str(random.randint(100000, 999999))
-            user.otp = otp
-            user.save()
 
-            # Отправка SMS
-            message = f"Ваш код подтверждения: {otp}"
-            send_sms(phone, message)
+            try:
+                user, created = CustomUser.objects.get_or_create(phone=phone)
+                verification_code = user.generate_verification_code()
 
-            request.session['phone'] = phone
-            return redirect('verify_otp')
+                # Отправка SMS
+                sms_service = SMSService()
+                message = f"Ваш код подтверждения: {verification_code}"
+                if sms_service.send_sms(phone, message):
+                    request.session['phone'] = phone
+                    return redirect('verify_code')
+                else:
+                    messages.error(request, 'Ошибка отправки SMS')
+            except Exception as e:
+                messages.error(request, 'Произошла ошибка')
+
     else:
-        form = PhoneLoginForm()
-    return render(request, 'phone_login.html', {'form': form})
+        form = PhoneForm()
+
+    return render(request, 'auth/send_code.html', {'form': form})
 
 
-def verify_otp(request):
+def verify_code(request):
     phone = request.session.get('phone')
     if not phone:
-        return redirect('phone_login')
+        return redirect('send_code')
 
     if request.method == 'POST':
-        form = OTPVerificationForm(request.POST)
+        form = VerificationForm(request.POST)
         if form.is_valid():
-            otp = form.cleaned_data['otp']
-            user = CustomUser.objects.get(phone=phone)
+            code = form.cleaned_data['code']
 
-            if user.otp == otp:
-                user.is_phone_verified = True
-                user.save()
-                login(request, user)
-                return redirect('home')
-            else:
-                form.add_error('otp', 'Неверный код')
+            try:
+                user = CustomUser.objects.get(phone=phone)
+                if user.verification_code == code:
+                    user.is_verified = True
+                    user.save()
+
+                    # Авторизуем пользователя
+                    login(request, user)
+                    return redirect('home')
+                else:
+                    messages.error(request, 'Неверный код')
+            except CustomUser.DoesNotExist:
+                messages.error(request, 'Пользователь не найден')
+
     else:
-        form = OTPVerificationForm()
+        form = VerificationForm()
 
-    return render(request, 'verify_otp.html', {'form': form, 'phone': phone})
+    return render(request, 'auth/verify_code.html', {
+        'form': form,
+        'phone': phone
+    })
 
 
-@login_required
-def home(request):
-    return render(request, 'home.html')
+from django.core.cache import cache
+
+
+def send_verification_code(request):
+
+    if request.method == 'POST':
+        # Проверка лимита запросов
+        ip = request.META.get('REMOTE_ADDR')
+        key = f'sms_limit_{ip}'
+        attempts = cache.get(key, 0)
+
+        if attempts >= 5:
+            messages.error(request, 'Слишком много попыток. Попробуйте через час.')
+            return render(request, 'auth/send_code.html', {'form': PhoneForm()})
+
+        form = PhoneForm(request.POST)
+        if form.is_valid():
+            phone = form.cleaned_data['phone']
+
+            try:
+                user, created = CustomUser.objects.get_or_create(phone=phone)
+                verification_code = user.generate_verification_code()
+
+                # Отправка SMS
+                sms_service = SMSService()
+                message = f"Ваш код подтверждения: {verification_code}"
+                if sms_service.send_sms(phone, message):
+                    # Увеличиваем счетчик попыток
+                    cache.set(key, attempts + 1, timeout=3600)
+                    request.session['phone'] = phone
+                    return redirect('verify_code')
+                else:
+                    messages.error(request, 'Ошибка отправки SMS')
+            except Exception as e:
+                messages.error(request, 'Произошла ошибка')
+
+    else:
+        form = PhoneForm()
+
+    return render(request, 'auth/send_code.html', {'form': form})

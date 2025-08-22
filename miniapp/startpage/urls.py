@@ -1,13 +1,7 @@
-from django.urls import path, include
-from .views import ToursList, ToursDetail
-from . import views
-
 from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('login/', views.phone_login, name='phone_login'),
-    path('verify/', views.verify_otp, name='verify_otp'),
-    path('home/', views.home, name='home'),
+    path('send-code/', views.send_verification_code, name='send_code'),
+    path('verify-code/', views.verify_code, name='verify_code'),
 ]
-
